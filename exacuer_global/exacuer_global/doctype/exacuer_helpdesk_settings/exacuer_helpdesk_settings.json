@@ -1,0 +1,59 @@
+{
+ "actions": [],
+ "creation": "2026-08-05 23:55:00",
+ "doctype": "DocType",
+ "editable_grid": 0,
+ "engine": "InnoDB",
+ "field_order": [
+  "section_break_chat",
+  "enable_floating_chat",
+  "embed_snippet"
+ ],
+ "fields": [
+  {
+   "fieldname": "section_break_chat",
+   "fieldtype": "Section Break",
+   "label": "Floating Support Chat"
+  },
+  {
+   "default": "1",
+   "description": "Shows the chat launcher bottom-right on every Desk page.",
+   "fieldname": "enable_floating_chat",
+   "fieldtype": "Check",
+   "label": "Enable Floating Chat"
+  },
+  {
+   "depends_on": "eval:doc.enable_floating_chat",
+   "description": "Paste the embed snippet copied from Exacuer Chat Widget on the helpdesk. Fieldtype is Code because Frappe strips &lt;script&gt; tags from Small Text and Text fields on save.",
+   "fieldname": "embed_snippet",
+   "fieldtype": "Code",
+   "label": "Embed Snippet"
+  }
+ ],
+ "icon": "fa fa-comments",
+ "index_web_pages_for_search": 0,
+ "issingle": 1,
+ "links": [],
+ "modified": "2026-08-08 16:00:00.000000",
+ "modified_by": "Administrator",
+ "module": "Exacuer Global",
+ "name": "Exacuer Helpdesk Settings",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "print": 1,
+   "read": 1,
+   "role": "System Manager",
+   "share": 1,
+   "write": 1
+  }
+ ],
+ "row_format": "Dynamic",
+ "sort_field": "creation",
+ "sort_order": "DESC",
+ "states": [],
+ "track_changes": 1
+}
