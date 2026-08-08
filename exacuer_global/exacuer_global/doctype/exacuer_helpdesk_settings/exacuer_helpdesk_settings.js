@@ -276,24 +276,60 @@ async function api_rows(status) {
 	return rows;
 }
 
+/**
+ * What this browser actually got.
+ *
+ * Every row above is about the helpdesk. This one is the only check that can see
+ * the last hop — whether chat_desk.js got the script onto the page and whether
+ * the widget then mounted. "Has the key but no launcher" was previously the whole
+ * answer here, which is true but points nowhere, so the two ways it fails are
+ * separated: the script never arrived, or it arrived and rendered nothing.
+ */
 function this_page_row(status) {
+	const label = __("This page");
 	const boot = (frappe.boot && frappe.boot.exacuer_chat) || {};
-	const launcher = document.querySelector("div[data-exacuer-chat]");
 
 	if (boot.key !== status.key) {
 		return {
-			label: __("This page"),
+			label,
 			state: "warn",
 			detail: __("Loaded before the last save. Reload to pick up the current key."),
 		};
 	}
 
+	if (document.querySelector("div[data-exacuer-chat]")) {
+		return { label, state: "pass", detail: __("The launcher is on this page, bottom-right.") };
+	}
+
+	const tag = document.querySelector('script[src*="chat_embed.js"]');
+	if (tag) {
+		return {
+			label,
+			state: "warn",
+			detail: `${__("The script tag is on this page but nothing rendered, so it failed to load or errored.")}<br>${esc(
+				tag.src
+			)}<br>${__("Check Script file above, then the browser console.")}`,
+		};
+	}
+
+	// Mixed content is the one failure the server cannot see: it depends on how
+	// *this* page was served, not on whether the URL works.
+	if (window.location.protocol === "https:" && (status.api_origin || "").startsWith("http://")) {
+		return {
+			label,
+			state: "fail",
+			detail: `${__("Blocked as mixed content.")} ${esc(status.api_origin)} ${__(
+				"is http and this Desk is https, so the browser refuses to load the script. Serve the helpdesk over https and re-copy the snippet."
+			)}`,
+		};
+	}
+
 	return {
-		label: __("This page"),
-		state: launcher ? "pass" : "warn",
-		detail: launcher
-			? __("The launcher is on this page, bottom-right.")
-			: __("Has the key, but no launcher was rendered. Reload; if it stays away, check the browser console."),
+		label,
+		state: "fail",
+		detail: __(
+			"No chat script reached this page. Reload; if it stays away, chat_desk.js did not inject it — check the browser console."
+		),
 	};
 }
 

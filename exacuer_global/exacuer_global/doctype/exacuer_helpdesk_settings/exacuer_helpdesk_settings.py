@@ -3,9 +3,14 @@
 Paste the embed snippet copied from Exacuer Chat Widget and the launcher appears
 bottom-right on every Desk page. Delivery is:
 
-    exacuer_support hooks.app_include_js -> loads chat_embed.js on Desk
-    exacuer_global  hooks.boot_session   -> chat_boot publishes the key into frappe.boot
-    chat_embed.js                        -> reads frappe.boot.exacuer_chat.key
+    hooks.boot_session   -> chat_boot publishes key + origin into frappe.boot
+    hooks.app_include_js -> chat_desk.js reads boot and injects chat_embed.js from
+                            the helpdesk origin, carrying data-chat-key
+    chat_embed.js        -> reads that attribute; its API base is its own src
+
+All three steps are this app's, so a customer site needs nothing else installed.
+Where exacuer_support is also installed it serves its own local copy and
+chat_desk.js stands down.
 
 Two Frappe details this depends on:
 

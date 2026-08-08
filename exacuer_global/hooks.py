@@ -26,7 +26,14 @@ app_license = "mit"
 
 # include js, css files in header of desk.html
 # app_include_css = "/assets/exacuer_global/css/exacuer_global.css"
-# app_include_js = "/assets/exacuer_global/js/exacuer_global.js"
+
+# Loads the floating chat on Desk. The widget script itself lives in
+# exacuer_support on the helpdesk, so this file fetches it from the origin in the
+# saved snippet — which is what lets a customer site run this app on its own.
+# It no-ops when exacuer_support is installed here and has already served it.
+app_include_js = [
+	"/assets/exacuer_global/js/chat_desk.js",
+]
 
 # include js, css files in header of web template
 # web_include_css = "/assets/exacuer_global/css/exacuer_global.css"
@@ -130,10 +137,12 @@ app_license = "mit"
 # owns the *customer* side: Exacuer Helpdesk Settings holds the pasted snippet, and
 # chat_boot parses the key and origin out of it.
 #
-# app_include_js stays in exacuer_support, which owns /assets/exacuer_support/js/
-# chat_embed.js — moving that path would break every snippet already pasted on a
-# customer's site. So a Desk launcher needs both apps installed; with only one, the
-# widget quietly does nothing rather than half-loading.
+# The script keeps living at /assets/exacuer_support/js/chat_embed.js — moving that
+# path would break every snippet already pasted on a customer's site. But a customer
+# site does not install exacuer_support, so chat_desk.js above fetches the script
+# from the helpdesk origin published here. That is why origin travels with the key:
+# it locates the script, and chat_embed.js then derives its API base from its own
+# src, sending the key back to the helpdesk that issued it.
 boot_session = [
 	"exacuer_global.chat_boot.add_chat_key",
 ]

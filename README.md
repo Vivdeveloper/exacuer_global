@@ -26,9 +26,14 @@ That asset path deliberately stays there — it is the URL inside every embed sn
 pasted on a customer's site, and `/assets` is served by nginx, so a move could not be
 redirected.
 
-**So a Desk launcher needs both apps installed:** this one for the settings and the boot
-key, `exacuer_support` for the script. With only one, the widget quietly does nothing rather
-than half-loading. A site that only needs the reporting pages needs this app alone.
+**This app is enough on a customer site.** `chat_desk.js` reads the key and origin out of
+boot and pulls `chat_embed.js` from the helpdesk — the same way a customer *website* loads
+it. Installing `exacuer_support` alongside is not required; where it is installed, it serves
+its own local copy and `chat_desk.js` stands down so nothing loads twice.
+
+Because the script is fetched from the helpdesk, its origin must be reachable from the
+browser, and an `https` Desk cannot load an `http` snippet URL — mixed content is blocked.
+**Test Chat** reports both.
 
 Chat design, access rules and API: see `DESIGN.md` in `exacuer_support`.
 

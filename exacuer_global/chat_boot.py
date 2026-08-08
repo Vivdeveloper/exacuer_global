@@ -7,15 +7,16 @@ Desk is a different injection surface from the website:
   * app_include_js renders a plain <script src="...">, so it cannot carry a
     data-chat-key attribute
 
-So on Desk the key travels through boot instead, and chat_embed.js picks it up
-from frappe.boot.exacuer_chat.
+So on Desk the key travels through boot instead, and chat_desk.js picks it up from
+frappe.boot.exacuer_chat.
 
-The snippet's script URL is published alongside the key, and this matters: a
-customer site's Desk is normally talking to a *different* site — the central
-helpdesk that owns the HD Customer and the widget record. app_include_js always
-serves this app's own copy of chat_embed.js from the local origin, so without the
-URL the widget would send the helpdesk's key to the local site's API and be told
-the key is unknown.
+The snippet's origin is published alongside the key, and this matters: a customer
+site's Desk is normally talking to a *different* site — the central helpdesk that
+owns the HD Customer and the widget record. That origin is where chat_desk.js
+fetches chat_embed.js from, which is also what makes a customer site self-
+sufficient: the script does not have to be installed locally. chat_embed.js then
+derives its API base from its own src, so the key goes back to the helpdesk that
+issued it rather than to the local site, which would call it unknown.
 
 Only the managed widget can load this way. A raw third-party snippet has no key
 and is an inline <script> block, which app_include_js cannot express at all.

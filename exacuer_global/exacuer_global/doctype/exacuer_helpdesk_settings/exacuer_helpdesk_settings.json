@@ -16,8 +16,8 @@
    "label": "Floating Support Chat"
   },
   {
-   "default": "1",
-   "description": "Shows the chat launcher bottom-right on every Desk page.",
+   "default": "0",
+   "description": "Shows the chat launcher bottom-right on every Desk page. Needs the embed snippet below — ticking this alone does nothing.",
    "fieldname": "enable_floating_chat",
    "fieldtype": "Check",
    "label": "Enable Floating Chat"
@@ -34,7 +34,7 @@
  "index_web_pages_for_search": 0,
  "issingle": 1,
  "links": [],
- "modified": "2026-08-08 16:00:00.000000",
+ "modified": "2026-08-08 17:30:00.000000",
  "modified_by": "Administrator",
  "module": "Exacuer Global",
  "name": "Exacuer Helpdesk Settings",
