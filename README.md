@@ -1,33 +1,48 @@
-### Exacuer Global
+# Exacuer Global
 
-Exacuer Global
+The **customer-side** half of Exacuer's Frappe tooling: turn on the support chat, and the
+Desk reporting pages. Install this on a customer's site.
 
-### Installation
+**Publisher:** Vivek Choudhary · **License:** MIT · **Requires:** Frappe 15 or 16
 
-You can install this app using the [bench](https://github.com/frappe/bench) CLI:
+---
+
+## What is in here
+
+| Thing | Purpose |
+|---|---|
+| **Exacuer Helpdesk Settings** (Single) | Enable the floating chat launcher on Desk, hold the pasted embed snippet, and **Test Chat** |
+| `chat_boot.py` | `boot_session` hook — parses the key and origin out of the snippet into `frappe.boot` so the widget can load on Desk |
+| Pages | Customer Insights, Supplier Insights, Item Rate History, Product Traceability |
+| Workspace | **Exacuer Features** |
+
+## Its relationship to `exacuer_support`
+
+`exacuer_support` is the **helpdesk-side** app: it owns the `Exacuer Chat Widget` doctype,
+the guest chat API (`exacuer_support.chat_widget.*`) and the widget script itself at
+`/assets/exacuer_support/js/chat_embed.js`.
+
+That asset path deliberately stays there — it is the URL inside every embed snippet already
+pasted on a customer's site, and `/assets` is served by nginx, so a move could not be
+redirected.
+
+**So a Desk launcher needs both apps installed:** this one for the settings and the boot
+key, `exacuer_support` for the script. With only one, the widget quietly does nothing rather
+than half-loading. A site that only needs the reporting pages needs this app alone.
+
+Chat design, access rules and API: see `DESIGN.md` in `exacuer_support`.
+
+## Installation
 
 ```bash
-cd $PATH_TO_YOUR_BENCH
-bench get-app $URL_OF_THIS_REPO --branch master
-bench install-app exacuer_global
+bench get-app <url-of-this-repo>
+bench --site <site> install-app exacuer_global
+bench --site <site> migrate
 ```
 
-### Contributing
+Install order matters when moving from an older `exacuer_support`: install this app
+**before** migrating, so its module exists when the moved DocType and Pages are synced to it.
 
-This app uses `pre-commit` for code formatting and linting. Please [install pre-commit](https://pre-commit.com/#installation) and enable it for this repository:
+## License
 
-```bash
-cd apps/exacuer_global
-pre-commit install
-```
-
-Pre-commit is configured to use the following tools for checking and formatting your code:
-
-- ruff
-- eslint
-- prettier
-- pyupgrade
-
-### License
-
-mit
+MIT

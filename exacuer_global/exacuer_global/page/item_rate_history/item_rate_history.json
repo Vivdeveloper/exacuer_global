@@ -1,0 +1,21 @@
+{
+ "content": null,
+ "creation": "2025-09-14 12:00:00",
+ "docstatus": 0,
+ "doctype": "Page",
+ "module": "Exacuer Global",
+ "name": "item-rate-history",
+ "owner": "Administrator",
+ "page_name": "item-rate-history",
+ "roles": [
+  {
+   "role": "System Manager"
+  },
+  {
+   "role": "Accounts Manager"
+  }
+ ],
+ "standard": "Yes",
+ "title": "Item Rate History",
+ "modified": "2026-08-08 16:00:00.000000"
+}
