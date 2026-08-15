@@ -33,10 +33,12 @@ app_license = "mit"
 # It no-ops when exacuer_support is installed here and has already served it.
 app_include_js = [
 	"/assets/exacuer_global/js/chat_desk.js",
-	# Defines the party Stats strip; the doctype scripts below register it. It
-	# lives here rather than in each of those scripts because doctype_js is
-	# inlined per doctype, which would give four copies of the same code.
+	# Define the party Stats strip and the trading-history dialog; the doctype
+	# scripts below register them. They live here rather than in each of those
+	# scripts because doctype_js is inlined per doctype, which would give four
+	# copies of the same code.
 	"/assets/exacuer_global/js/party_stats.js",
+	"/assets/exacuer_global/js/order_history.js",
 ]
 
 # include js, css files in header of web template
